@@ -1,5 +1,6 @@
 import { Newspaper } from "lucide-react"
 import { Link } from "react-router-dom"
+import { ThemeToggle } from "../ui/ThemeToggle"
 
 export function Header() {
   return (
@@ -14,6 +15,9 @@ export function Header() {
               News<span className="text-blue-600">Hub</span>
             </span>
           </Link>
+          <div className="ml-2 border-l border-gray-200 pl-2 dark:border-gray-700">
+            <ThemeToggle />
+          </div>
         </div>
       </div>
     </header>

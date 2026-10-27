@@ -1,3 +1,4 @@
+import ArticleGrid from "@/features/news/components/ArticleGrid"
 import NewsFilters from "@/features/news/components/NewsFilters"
 import NewsSearch from "@/features/news/components/Search"
 import { Newspaper } from "lucide-react"
@@ -20,7 +21,6 @@ const NewsPage = () => {
       </div>
 
       {/* Search */}
-
       <div className="mb-6">
         <NewsSearch />
       </div>
@@ -29,7 +29,9 @@ const NewsPage = () => {
       <div className="mb-6 rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-800 dark:bg-gray-900">
         <NewsFilters />
       </div>
+
       {/* grid */}
+      <ArticleGrid />
     </div>
   )
 }

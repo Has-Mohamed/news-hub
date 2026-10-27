@@ -14,6 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Calendar } from "@/components/ui/calendar"
+import useFiltersParams from "../hooks/useFiltersParams"
 
 const categories = [
   "business",
@@ -27,11 +28,35 @@ const categories = [
 
 const sources = ["guardian", "news-api", "new-york-times"]
 
+const formatDate = (date: string) => {
+  if (!date) return ""
+
+  const d = new Date(date)
+  return d.toDateString()
+}
+
 const NewsFilters = () => {
+  const { filters, setSearchValue, clearFilters, hasFilters } =
+    useFiltersParams()
+
   return (
     <div className="flex w-full flex-col gap-4">
-      <div className="flex items-center gap-2">
-        <FilterIcon size={14} /> <span>Filters</span>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <FilterIcon size={14} /> <span>Filters</span>
+        </div>
+
+        {hasFilters && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => {
+              clearFilters()
+            }}
+          >
+            Clear all
+          </Button>
+        )}
       </div>
 
       <div className="flex flex-wrap gap-3">
@@ -39,11 +64,18 @@ const NewsFilters = () => {
         <Popover>
           <PopoverTrigger className="w-full flex-1 sm:w-fit">
             <Button variant="outline" className="h-10 w-full justify-start">
-              <Calendar1Icon size={16} /> From Date
+              <Calendar1Icon size={16} />{" "}
+              {formatDate(filters.from) || "From Date"}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0">
-            <Calendar />
+            <Calendar
+              mode="single"
+              selected={filters.from ? new Date(filters.from) : undefined}
+              onSelect={(e) => {
+                setSearchValue("from", e ? e.toISOString() : "")
+              }}
+            />
           </PopoverContent>
         </Popover>
 
@@ -51,16 +83,28 @@ const NewsFilters = () => {
         <Popover>
           <PopoverTrigger className="w-full flex-1 sm:w-fit">
             <Button variant="outline" className="h-10 w-full justify-start">
-              <Calendar1Icon size={16} /> To Date
+              <Calendar1Icon size={16} /> {formatDate(filters.to) || "To Date"}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0">
-            <Calendar />
+            <Calendar
+              mode="single"
+              selected={filters.to ? new Date(filters.to) : undefined}
+              onSelect={(e) => {
+                setSearchValue("to", e ? e.toISOString() : "")
+              }}
+            />
           </PopoverContent>
         </Popover>
 
         {/* source */}
-        <Select defaultValue="all">
+        <Select
+          defaultValue="all"
+          value={filters.source}
+          onValueChange={(e) => {
+            setSearchValue("source", e || "")
+          }}
+        >
           <SelectTrigger className="h-10! w-full flex-1 sm:w-fit">
             <SelectValue placeholder="Select source" />
           </SelectTrigger>
@@ -77,7 +121,13 @@ const NewsFilters = () => {
         </Select>
 
         {/* categories */}
-        <Select defaultValue="all">
+        <Select
+          defaultValue="all"
+          value={filters.category}
+          onValueChange={(e) => {
+            setSearchValue("category", e || "")
+          }}
+        >
           <SelectTrigger className="h-10! w-full flex-1 sm:w-fit">
             <SelectValue placeholder="Select category" />
           </SelectTrigger>

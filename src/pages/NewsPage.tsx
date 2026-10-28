@@ -5,7 +5,15 @@ import useNews from "@/features/news/hooks/useNews"
 import { Newspaper } from "lucide-react"
 
 const NewsPage = () => {
-  const { data, isLoading, isError, error, isFetchingNextPage } = useNews()
+  const {
+    data,
+    isLoading,
+    isError,
+    error,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+  } = useNews()
 
   return (
     <div className="container-custom py-6 lg:py-8">
@@ -40,6 +48,8 @@ const NewsPage = () => {
         isError={isError}
         error={error}
         isFetchingNextPage={isFetchingNextPage}
+        hasNextPage={hasNextPage}
+        fetchNextPage={fetchNextPage}
       />
     </div>
   )

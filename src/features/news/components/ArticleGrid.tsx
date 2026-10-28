@@ -3,6 +3,7 @@ import ArticleCard from "./ArticleCard"
 import { Loader2, AlertCircle, Search } from "lucide-react"
 import SkeletonCard from "./SkeletonCard"
 import type { Article } from "../types/Articles"
+import { useInfiniteScroll } from "@/shared/hooks/useInfiniteScroll"
 
 type ArticleGridProps = {
   articles: Article[]
@@ -10,6 +11,8 @@ type ArticleGridProps = {
   isError: boolean
   error: Error | null
   isFetchingNextPage: boolean
+  hasNextPage: boolean
+  fetchNextPage: () => void
 }
 
 const ArticleGrid = ({
@@ -18,7 +21,15 @@ const ArticleGrid = ({
   isError,
   error,
   isFetchingNextPage,
+  hasNextPage,
+  fetchNextPage,
 }: ArticleGridProps) => {
+  const { lastElementRef } = useInfiniteScroll({
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+  })
+
   if (isLoading) {
     return (
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -73,8 +84,13 @@ const ArticleGrid = ({
   return (
     <div>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {articles.map((article) => (
-          <ArticleCard article={article} />
+        {articles.map((article, index, array) => (
+          <div
+            ref={index === array.length - 1 ? lastElementRef : undefined}
+            key={article.id}
+          >
+            <ArticleCard article={article} />
+          </div>
         ))}
       </div>
 

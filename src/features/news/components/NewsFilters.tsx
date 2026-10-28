@@ -15,18 +15,7 @@ import {
 } from "@/components/ui/select"
 import { Calendar } from "@/components/ui/calendar"
 import useFiltersParams from "../hooks/useFiltersParams"
-
-const categories = [
-  "business",
-  "entertainment",
-  "general",
-  "health",
-  "science",
-  "sports",
-  "technology",
-]
-
-const sources = ["guardian", "news-api", "new-york-times"]
+import { CATEGORIES, SOURCE_LABELS } from "../types/Articles"
 
 const formatDate = (date: string) => {
   if (!date) return ""
@@ -104,6 +93,10 @@ const NewsFilters = () => {
           onValueChange={(e) => {
             setSearchValue("source", e || "")
           }}
+          items={Object.entries(SOURCE_LABELS).map(([key, value]) => ({
+            value: key,
+            label: value,
+          }))}
         >
           <SelectTrigger className="h-10! w-full flex-1 sm:w-fit">
             <SelectValue placeholder="Select source" />
@@ -111,9 +104,9 @@ const NewsFilters = () => {
           <SelectContent>
             <SelectGroup>
               <SelectItem value="all">All Sources</SelectItem>
-              {sources.map((source) => (
-                <SelectItem value={source} key={source}>
-                  {source}
+              {Object.entries(SOURCE_LABELS).map(([key, value]) => (
+                <SelectItem value={key} key={key} className="capitalize">
+                  {value}
                 </SelectItem>
               ))}
             </SelectGroup>
@@ -124,6 +117,10 @@ const NewsFilters = () => {
         <Select
           defaultValue="all"
           value={filters.category}
+          items={CATEGORIES.map((category) => ({
+            value: category,
+            label: category,
+          }))}
           onValueChange={(e) => {
             setSearchValue("category", e || "")
           }}
@@ -134,8 +131,12 @@ const NewsFilters = () => {
           <SelectContent>
             <SelectGroup>
               <SelectItem value="all">All Categories</SelectItem>
-              {categories.map((category) => (
-                <SelectItem value={category} key={category}>
+              {CATEGORIES.map((category) => (
+                <SelectItem
+                  value={category}
+                  key={category}
+                  className="capitalize"
+                >
                   {category}
                 </SelectItem>
               ))}

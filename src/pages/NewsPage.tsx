@@ -1,9 +1,12 @@
 import ArticleGrid from "@/features/news/components/ArticleGrid"
 import NewsFilters from "@/features/news/components/NewsFilters"
 import NewsSearch from "@/features/news/components/Search"
+import useNews from "@/features/news/hooks/useNews"
 import { Newspaper } from "lucide-react"
 
 const NewsPage = () => {
+  const { data, isLoading, isError, error, isFetchingNextPage } = useNews()
+
   return (
     <div className="container-custom py-6 lg:py-8">
       {/* Hero Section */}
@@ -31,7 +34,13 @@ const NewsPage = () => {
       </div>
 
       {/* grid */}
-      <ArticleGrid />
+      <ArticleGrid
+        articles={data?.pages.flatMap((page) => page.articles) || []}
+        isLoading={isLoading}
+        isError={isError}
+        error={error}
+        isFetchingNextPage={isFetchingNextPage}
+      />
     </div>
   )
 }

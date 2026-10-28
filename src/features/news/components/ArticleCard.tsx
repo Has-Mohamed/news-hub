@@ -1,10 +1,10 @@
 import { Clock, ExternalLink, User } from "lucide-react"
-import type { Articles } from "../types/Articles"
+import type { Article } from "../types/Articles"
 import { formatDistanceToNow } from "date-fns"
 import { SOURCE_LABELS } from "../types/Articles"
 import { Badge } from "@/components/ui/badge"
 
-const ArticleCard = ({ article }: { article: Articles }) => {
+const ArticleCard = ({ article }: { article: Article }) => {
   const timeAgo = formatDistanceToNow(new Date(article.publishedAt), {
     addSuffix: true,
   })

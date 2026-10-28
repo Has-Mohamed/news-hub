@@ -2,50 +2,23 @@ import ArticleCard from "./ArticleCard"
 
 import { Loader2, AlertCircle, Search } from "lucide-react"
 import SkeletonCard from "./SkeletonCard"
-import type { Articles } from "../types/Articles"
+import type { Article } from "../types/Articles"
 
-const ArticleGrid = () => {
-  // Initial loading state
-  const isLoading = false
-  const isError = false
-  const error = null
-  const articles: Articles[] = [
-    {
-      id: "1",
-      author: "Hassan Mohamed",
-      category: "technology",
-      description: "This is a test description",
-      title: "long description for testing purposes",
-      articleUrl: "https://google.com",
-      imageUrl: "https://google.com/favicon.ico",
-      publishedAt: new Date().toISOString(),
-      source: "nytimes",
-    },
-    {
-      id: "2",
-      author: "Hassan Mohamed",
-      category: "technology",
-      description: "This is a test description",
-      title: "long description for testing purposes",
-      articleUrl: "https://google.com",
-      imageUrl: "https://google.com/favicon.ico",
-      publishedAt: new Date().toISOString(),
-      source: "guardian",
-    },
-    {
-      id: "3",
-      author: "Hassan Mohamed",
-      category: "technology",
-      description: "This is a test description",
-      title: "long description for testing purposes",
-      articleUrl: "https://google.com",
-      imageUrl: "https://google.com/favicon.ico",
-      publishedAt: new Date().toISOString(),
-      source: "newsapi",
-    },
-  ]
-  const isFetchingNextPage = false
+type ArticleGridProps = {
+  articles: Article[]
+  isLoading: boolean
+  isError: boolean
+  error: Error | null
+  isFetchingNextPage: boolean
+}
 
+const ArticleGrid = ({
+  articles,
+  isLoading,
+  isError,
+  error,
+  isFetchingNextPage,
+}: ArticleGridProps) => {
   if (isLoading) {
     return (
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -67,7 +40,7 @@ const ArticleGrid = () => {
           Failed to load articles
         </h3>
         <p className="mb-4 max-w-md text-sm text-gray-500 dark:text-gray-400">
-          {error || "An unexpected error occurred. Please try again."}
+          {error?.message || "An unexpected error occurred. Please try again."}
         </p>
         <button
           onClick={() => window.location.reload()}

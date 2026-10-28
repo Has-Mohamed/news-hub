@@ -88,7 +88,7 @@ const NewsFilters = () => {
 
         {/* source */}
         <Select
-          defaultValue="all"
+          defaultValue=""
           value={filters.source}
           onValueChange={(e) => {
             setFilterValue("source", e || "")
@@ -103,7 +103,7 @@ const NewsFilters = () => {
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectItem value="all">All Sources</SelectItem>
+              <SelectItem value="">All Sources</SelectItem>
               {Object.entries(SOURCE_LABELS).map(([key, value]) => (
                 <SelectItem value={key} key={key} className="capitalize">
                   {value}
@@ -115,7 +115,6 @@ const NewsFilters = () => {
 
         {/* categories */}
         <Select
-          defaultValue="all"
           value={filters.category}
           items={CATEGORIES.map((category) => ({
             value: category,
@@ -130,7 +129,7 @@ const NewsFilters = () => {
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectItem value="all">All Categories</SelectItem>
+              <SelectItem value="">All Categories</SelectItem>
               {CATEGORIES.map((category) => (
                 <SelectItem
                   value={category}

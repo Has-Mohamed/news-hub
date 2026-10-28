@@ -25,7 +25,7 @@ const formatDate = (date: string) => {
 }
 
 const NewsFilters = () => {
-  const { filters, setSearchValue, clearFilters, hasFilters } =
+  const { filters, setFilterValue, clearFilters, hasFilters } =
     useFiltersParams()
 
   return (
@@ -62,7 +62,7 @@ const NewsFilters = () => {
               mode="single"
               selected={filters.from ? new Date(filters.from) : undefined}
               onSelect={(e) => {
-                setSearchValue("from", e ? e.toISOString() : "")
+                setFilterValue("from", e ? e.toISOString() : "")
               }}
             />
           </PopoverContent>
@@ -80,7 +80,7 @@ const NewsFilters = () => {
               mode="single"
               selected={filters.to ? new Date(filters.to) : undefined}
               onSelect={(e) => {
-                setSearchValue("to", e ? e.toISOString() : "")
+                setFilterValue("to", e ? e.toISOString() : "")
               }}
             />
           </PopoverContent>
@@ -91,7 +91,7 @@ const NewsFilters = () => {
           defaultValue="all"
           value={filters.source}
           onValueChange={(e) => {
-            setSearchValue("source", e || "")
+            setFilterValue("source", e || "")
           }}
           items={Object.entries(SOURCE_LABELS).map(([key, value]) => ({
             value: key,
@@ -122,7 +122,7 @@ const NewsFilters = () => {
             label: category,
           }))}
           onValueChange={(e) => {
-            setSearchValue("category", e || "")
+            setFilterValue("category", e || "")
           }}
         >
           <SelectTrigger className="h-10! w-full flex-1 sm:w-fit">

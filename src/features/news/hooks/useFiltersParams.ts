@@ -4,24 +4,29 @@ import type { NewsSource } from "../types/Articles"
 import debounce from "@/lib/debounce"
 
 export type FilterKey = "search" | "from" | "to" | "source" | "category"
+export type Filters = {
+  search: string
+  from: string
+  to: string
+  source: NewsSource[]
+  category: string[]
+}
 
-type FilterParams = {
+type SetAllFilters = (filters: { source?: string; category?: string }) => void
+export type FilterParams = {
   setFilterValue: (key: FilterKey, value: string | string[]) => void
   getSearchValue: (key: FilterKey) => string | null
   localSearch: string
-  filters: {
-    search: string
-    from: string
-    to: string
-    source: NewsSource[]
-    category: string[]
-  }
+  filters: Filters
   hasFilters: boolean
   clearFilters: () => void
+  setAllFilters: SetAllFilters
 }
 
 const useFiltersParams = (): FilterParams => {
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams(
+    window.location.search
+  )
 
   const from = searchParams.get("from") || ""
   const to = searchParams.get("to") || ""
@@ -109,6 +114,10 @@ const useFiltersParams = (): FilterParams => {
     }
   }
 
+  const setAllFilters: SetAllFilters = (filters) => {
+    setSearchParams(filters)
+  }
+
   return {
     setFilterValue,
     getSearchValue,
@@ -116,6 +125,7 @@ const useFiltersParams = (): FilterParams => {
     filters,
     hasFilters,
     clearFilters,
+    setAllFilters,
   }
 }
 

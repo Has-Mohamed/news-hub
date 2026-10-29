@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button"
+import { Calendar } from "@/components/ui/calendar"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { Calendar1Icon, FilterIcon } from "lucide-react"
 import {
   Select,
   SelectContent,
@@ -13,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Calendar } from "@/components/ui/calendar"
+import { Calendar1Icon, FilterIcon } from "lucide-react"
 import useFiltersParams from "../hooks/useFiltersParams"
 import { CATEGORIES, SOURCE_LABELS } from "../types/Articles"
 
@@ -25,7 +25,7 @@ const formatDate = (date: string) => {
 }
 
 const NewsFilters = () => {
-  const { filters, setFilterValue, clearFilters, hasFilters } =
+  const { filters, setFilterValue, hasFilters, clearFilters } =
     useFiltersParams()
 
   return (
@@ -43,7 +43,7 @@ const NewsFilters = () => {
               clearFilters()
             }}
           >
-            Clear all
+            clear
           </Button>
         )}
       </div>
@@ -103,7 +103,6 @@ const NewsFilters = () => {
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectItem value="">All Sources</SelectItem>
               {Object.entries(SOURCE_LABELS).map(([key, value]) => (
                 <SelectItem value={key} key={key} className="capitalize">
                   {value}
@@ -130,7 +129,6 @@ const NewsFilters = () => {
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectItem value="">All Categories</SelectItem>
               {CATEGORIES.map((category) => (
                 <SelectItem
                   value={category}

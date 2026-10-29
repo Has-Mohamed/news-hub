@@ -16,6 +16,10 @@ interface PreferencesState {
   addAuthor: (author: string) => void
   removeAuthor: (author: string) => void
 
+  //  flag to check if has been used at least once by the user to fetch data
+  hasBeenUsed: boolean
+  setHasBeenUsed: (hasBeenUsed: boolean) => void
+
   //reset
   resetPreferences: () => void
 }
@@ -52,6 +56,10 @@ const usePreferences = create<PreferencesState>()(
           preferredAuthors: state.preferredAuthors.filter((a) => a !== author),
         })),
 
+      // flag to check if has been used at least once by the user to fetch data
+      hasBeenUsed: false,
+      setHasBeenUsed: (hasBeenUsed: boolean) => set(() => ({ hasBeenUsed })),
+
       //reset
       resetPreferences: () =>
         set(() => ({
@@ -62,6 +70,10 @@ const usePreferences = create<PreferencesState>()(
     }),
     {
       name: "preferences",
+      partialize: (state) => ({
+        ...state,
+        hasBeenUsed: false,
+      }),
     }
   )
 )

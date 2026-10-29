@@ -26,7 +26,7 @@ export const PreferencesDrawer = () => {
         }
       />
       <DrawerContent className="dark:bg-gray-900">
-        <DrawerHeader>
+        <DrawerHeader className="mb-1">
           <DrawerTitle>
             <div className="flex items-center gap-3">
               <div className="flex h-9 w-9 items-center justify-center rounded-md bg-blue-100 text-blue-600 dark:bg-blue-900/40 dark:text-blue-400">
@@ -65,7 +65,7 @@ export const PreferencesDrawer = () => {
           </div>
         </div>
 
-        <DrawerFooter>
+        <DrawerFooter className="mt-1">
           <DrawerClose render={<Button>Close</Button>} />
         </DrawerFooter>
       </DrawerContent>

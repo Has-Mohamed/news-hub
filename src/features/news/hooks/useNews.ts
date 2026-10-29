@@ -3,21 +3,12 @@ import { useInfiniteQuery } from "@tanstack/react-query"
 import useFiltersParams from "./useFiltersParams"
 
 const useNews = () => {
-  const {
-    filters: { search, ...rest },
-    debouncedSearch,
-  } = useFiltersParams()
+  const { filters } = useFiltersParams()
 
-  console.table({
-    search,
-  })
-
-  const filtersParams = { ...rest, search: debouncedSearch }
   return useInfiniteQuery({
-    queryKey: ["news", filtersParams],
+    queryKey: ["news", filters],
 
-    queryFn: ({ pageParam }) =>
-      fetchAllArticles({ page: pageParam, filters: filtersParams }),
+    queryFn: ({ pageParam }) => fetchAllArticles({ page: pageParam, filters }),
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
       const totalFetched = allPages.reduce(

@@ -8,7 +8,7 @@ export type FilterKey = "search" | "from" | "to" | "source" | "category"
 type FilterParams = {
   setFilterValue: (key: FilterKey, value: string) => void
   getSearchValue: (key: FilterKey) => string | null
-  debouncedSearch: string
+  localSearch: string
   filters: {
     search: string
     from: string
@@ -29,7 +29,10 @@ const useFiltersParams = (): FilterParams => {
   const category = searchParams.get("category") || ""
   const debouncedSearch = searchParams.get("search") || ""
 
-  const [localSearch, setLocalSearch] = useState(debouncedSearch)
+  // I know that every time I call useFiltersParams, it will create a new instance of localSearch
+  // but I just use it to display the search value in the search input, not for the query key
+  // why I didn’t use searchParams in search input instead of localSearch ? we can discuss it later :D :D
+  const [localSearch, setLocalSearch] = useState(() => debouncedSearch)
 
   const hasFilters = useMemo(() => {
     const params = new URLSearchParams(searchParams)
@@ -38,7 +41,7 @@ const useFiltersParams = (): FilterParams => {
   }, [searchParams])
 
   const filters = {
-    search: localSearch,
+    search: debouncedSearch,
     from,
     to,
     source,
@@ -91,7 +94,7 @@ const useFiltersParams = (): FilterParams => {
   return {
     setFilterValue,
     getSearchValue,
-    debouncedSearch,
+    localSearch,
     filters,
     hasFilters,
     clearFilters,

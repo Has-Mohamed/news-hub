@@ -24,11 +24,13 @@ interface ResolveFiltersParams {
     preferredSource: NewsSource[]
     preferredCategory: string[]
   }
+  hasBeenUsed: boolean
 }
 
 export function resolveFilters({
   urlFilters,
   preferences,
+  hasBeenUsed,
 }: ResolveFiltersParams) {
   if (hasAnyValue(urlFilters)) {
     return {
@@ -42,7 +44,7 @@ export function resolveFilters({
     category: preferences.preferredCategory,
   }
 
-  if (hasAnyValue(preferenceFilters)) {
+  if (hasAnyValue(preferenceFilters) && !hasBeenUsed) {
     return {
       filters: { ...DEFAULT_FILTERS, ...preferenceFilters },
       origin: "preferences" as const,
@@ -61,6 +63,7 @@ export function useResolvedFilters() {
   const { filters, origin } = resolveFilters({
     urlFilters,
     preferences: { preferredSource, preferredCategory },
+    hasBeenUsed,
   })
 
   const applyPreferences = () => {

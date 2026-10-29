@@ -43,7 +43,7 @@ const NewsPage = () => {
 
       {/* grid */}
       <ArticleGrid
-        articles={data?.pages.flatMap((page) => page.articles) || []}
+        articles={data?.articles || []}
         isLoading={isLoading}
         isError={isError}
         error={error}

@@ -24,9 +24,7 @@ export type FilterParams = {
 }
 
 const useFiltersParams = (): FilterParams => {
-  const [searchParams, setSearchParams] = useSearchParams(
-    window.location.search
-  )
+  const [searchParams, setSearchParams] = useSearchParams()
 
   const from = searchParams.get("from") || ""
   const to = searchParams.get("to") || ""
@@ -113,6 +111,7 @@ const useFiltersParams = (): FilterParams => {
       setSearchParams({})
     }
   }
+  console.log({ filters })
 
   const setAllFilters: SetAllFilters = (filters) => {
     setSearchParams(filters)

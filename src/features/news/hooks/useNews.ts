@@ -1,14 +1,16 @@
 import { fetchAllArticles } from "@/services/api/newsProviders/newsService"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import { useResolvedFilters } from "./useResolvedFilters"
+import usePreferences from "@/features/preferences/store/usePreferences"
+import { sortArticlesByPreferredAuthors } from "../lib/utils"
 
 const useNews = () => {
-  const { filters, origin } = useResolvedFilters()
+  const { filters } = useResolvedFilters()
+  const preferredAuthors = usePreferences((state) => state.preferredAuthors)
+  console.log("useNews", filters)
 
   return useInfiniteQuery({
     queryKey: ["news", filters],
-    // avoid fetching when origin is preferences cause it's already applied with changing query params
-    enabled: origin !== "preferences",
 
     queryFn: ({ pageParam }) => fetchAllArticles({ page: pageParam, filters }),
     initialPageParam: 1,
@@ -23,11 +25,15 @@ const useNews = () => {
 
     select: (data) => {
       const allArticles = data.pages.flatMap((page) => page.articles)
+      const sortedArticles = sortArticlesByPreferredAuthors(
+        allArticles,
+        preferredAuthors
+      )
 
       return {
         pages: data.pages,
         pageParams: data.pageParams,
-        articles: allArticles,
+        articles: sortedArticles,
       }
     },
   })

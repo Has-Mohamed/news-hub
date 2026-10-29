@@ -31,10 +31,10 @@ export const CATEGORIES = [
 
 export type ArticlesFilters = {
   search?: string
-  category?: string
+  category?: string[]
   from?: string
   to?: string
-  source?: NewsSource | null
+  source?: NewsSource[]
 }
 
 export type Category = (typeof CATEGORIES)[number]

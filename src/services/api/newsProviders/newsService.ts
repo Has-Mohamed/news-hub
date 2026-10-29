@@ -35,8 +35,8 @@ export const fetchAllArticles = async ({
   const params: ArticleApiParams = { filters: restFilters, page }
 
   // If a specific source is selected, only fetch from that provider; otherwise fetch from all
-  const providersToFetch = source
-    ? [newsProviders[source]]
+  const providersToFetch = source?.length
+    ? source.map((s) => newsProviders[s])
     : Object.values(newsProviders)
 
   const results = await Promise.allSettled(

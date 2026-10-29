@@ -32,11 +32,12 @@ export const fetchNewsApiArticles = async ({
       endpoint = "/top-headlines"
     }
 
-    if (category) {
+    if (category && category.length > 0) {
       // If category is provided, use "top-headlines" because "everything" doesn't support category parameter
       endpoint = "/top-headlines"
       queryParams.append("country", "us")
-      queryParams.append("category", category)
+      // news api doesn't support multiple categories
+      queryParams.append("category", category[0])
     }
 
     if (from) {

@@ -6,15 +6,15 @@ import debounce from "@/lib/debounce"
 export type FilterKey = "search" | "from" | "to" | "source" | "category"
 
 type FilterParams = {
-  setFilterValue: (key: FilterKey, value: string) => void
+  setFilterValue: (key: FilterKey, value: string | string[]) => void
   getSearchValue: (key: FilterKey) => string | null
   localSearch: string
   filters: {
     search: string
     from: string
     to: string
-    source: NewsSource | null
-    category: string
+    source: NewsSource[]
+    category: string[]
   }
   hasFilters: boolean
   clearFilters: () => void
@@ -25,9 +25,17 @@ const useFiltersParams = (): FilterParams => {
 
   const from = searchParams.get("from") || ""
   const to = searchParams.get("to") || ""
-  const source = (searchParams.get("source") as NewsSource) || null
-  const category = searchParams.get("category") || ""
   const debouncedSearch = searchParams.get("search") || ""
+
+  const sourceValues = useMemo(() => {
+    const source = searchParams.get("source")
+    return (source?.split(",") as NewsSource[]) || []
+  }, [searchParams])
+
+  const categoryValues = useMemo(() => {
+    const category = searchParams.get("category")
+    return category?.split(",") || []
+  }, [searchParams])
 
   // I know that every time I call useFiltersParams, it will create a new instance of localSearch
   // but I just use it to display the search value in the search input, not for the query key
@@ -44,8 +52,8 @@ const useFiltersParams = (): FilterParams => {
     search: debouncedSearch,
     from,
     to,
-    source,
-    category,
+    source: sourceValues,
+    category: categoryValues,
   }
 
   const debounceSetFilterValue = useMemo(
@@ -68,7 +76,17 @@ const useFiltersParams = (): FilterParams => {
     debounceSetFilterValue(key, value)
   }
 
-  const setFilterValue = (key: FilterKey, value: string) => {
+  const handleMultiSelect = (key: FilterKey, values: string[]) => {
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev)
+      if (values.length) next.set(key, values.join(","))
+      else next.delete(key)
+      return next
+    })
+  }
+
+  const setFilterValue = (key: FilterKey, value: string | string[]) => {
+    if (Array.isArray(value)) return handleMultiSelect(key, value)
     if (key === "search") return handleSearch(key, value)
 
     setSearchParams((prev) => {

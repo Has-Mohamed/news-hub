@@ -45,7 +45,7 @@ export const fetchGuardianArticles = async ({
       queryParams.append("to-date", to)
     }
 
-    const section = CATEGORY_TO_SECTION[category ?? ""] || ""
+    const section = category?.map((c) => CATEGORY_TO_SECTION[c]).join("|") || ""
     if (section) {
       queryParams.append("section", section)
     }

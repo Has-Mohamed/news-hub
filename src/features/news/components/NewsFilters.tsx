@@ -88,15 +88,15 @@ const NewsFilters = () => {
 
         {/* source */}
         <Select
-          defaultValue=""
           value={filters.source}
           onValueChange={(e) => {
-            setFilterValue("source", e || "")
+            setFilterValue("source", e)
           }}
           items={Object.entries(SOURCE_LABELS).map(([key, value]) => ({
             value: key,
             label: value,
           }))}
+          multiple
         >
           <SelectTrigger className="h-10! w-full flex-1 sm:w-fit">
             <SelectValue placeholder="Select source" />
@@ -123,6 +123,7 @@ const NewsFilters = () => {
           onValueChange={(e) => {
             setFilterValue("category", e || "")
           }}
+          multiple
         >
           <SelectTrigger className="h-10! w-full flex-1 sm:w-fit">
             <SelectValue placeholder="Select category" />

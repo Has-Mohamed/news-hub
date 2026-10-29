@@ -44,9 +44,9 @@ export const fetchNYTimesArticles = async ({
       queryParams.append("end_date", to.split("T")[0].split("-").join(""))
     }
 
-    if (category) {
-      const desk = CATEGORY_TO_DESK[category]
-      queryParams.append("fq", `desk:("${desk}")`)
+    if (category && category.length > 0) {
+      const desk = category.map((c) => `"${CATEGORY_TO_DESK[c]}"`).join(",")
+      queryParams.append("fq", `desk:(${desk})`)
     }
 
     // Construct the full URL

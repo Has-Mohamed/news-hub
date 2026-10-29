@@ -11,7 +11,7 @@ export function ThemeToggle() {
   ]
 
   return (
-    <div className="flex items-center gap-1 rounded-lg bg-gray-100 p-1 dark:bg-gray-800">
+    <div className="flex max-w-fit items-center gap-1 rounded-lg border border-gray-200 bg-gray-50 p-1 dark:border-gray-600 dark:bg-gray-700">
       {options.map(({ value, icon: Icon, label }) => (
         <button
           key={value}

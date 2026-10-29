@@ -1,0 +1,65 @@
+import type { Category, NewsSource } from "@/features/news/types/Articles"
+import { create } from "zustand"
+import { persist } from "zustand/middleware"
+
+interface PreferencesState {
+  // Source
+  preferredSource: NewsSource | ""
+  toggleSource: (source: NewsSource | "") => void
+
+  //Category
+  preferredCategory: Category | ""
+  toggleCategory: (category: Category | "") => void
+
+  //Author
+  preferredAuthors: string[]
+  addAuthor: (author: string) => void
+  removeAuthor: (author: string) => void
+
+  //reset
+  resetPreferences: () => void
+}
+
+const usePreferences = create<PreferencesState>()(
+  persist(
+    (set) => ({
+      // Source
+      preferredSource: "",
+      toggleSource: (preferredSource) =>
+        set(() => ({
+          preferredSource,
+        })),
+
+      //Category
+      preferredCategory: "",
+      toggleCategory: (preferredCategory) =>
+        set(() => ({
+          preferredCategory,
+        })),
+
+      //Author
+      preferredAuthors: [],
+      addAuthor: (author: string) =>
+        set((state) => ({
+          preferredAuthors: [...state.preferredAuthors, author],
+        })),
+      removeAuthor: (author: string) =>
+        set((state) => ({
+          preferredAuthors: state.preferredAuthors.filter((a) => a !== author),
+        })),
+
+      //reset
+      resetPreferences: () =>
+        set(() => ({
+          preferredSource: "",
+          preferredCategory: "",
+          preferredAuthors: [],
+        })),
+    }),
+    {
+      name: "preferences",
+    }
+  )
+)
+
+export default usePreferences

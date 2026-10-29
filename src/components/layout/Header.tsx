@@ -1,6 +1,6 @@
+import { PreferencesDrawer } from "@/features/preferences/components/PreferencesDrawer"
 import { Newspaper } from "lucide-react"
 import { Link } from "react-router-dom"
-import { ThemeToggle } from "../ui/ThemeToggle"
 
 export function Header() {
   return (
@@ -16,7 +16,7 @@ export function Header() {
             </span>
           </Link>
           <div className="ml-2 border-l border-gray-200 pl-2 dark:border-gray-700">
-            <ThemeToggle />
+            <PreferencesDrawer />
           </div>
         </div>
       </div>

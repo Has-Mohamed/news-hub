@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/providers/theme-provider.tsx"
 import { RouterProvider } from "react-router-dom"
 import "./index.css"
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query"
+import { Toaster } from "./components/ui/toast"
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,6 +21,7 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
+        <Toaster />
         <RouterProvider router={router} />
       </ThemeProvider>
     </QueryClientProvider>

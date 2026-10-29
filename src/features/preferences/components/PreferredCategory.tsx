@@ -21,12 +21,12 @@ const PreferredCategory = () => {
 
       <div className="flex flex-wrap gap-2">
         {CATEGORIES.map((cat) => {
-          const isSelected = preferredCategory === cat
+          const isSelected = preferredCategory.includes(cat)
           return (
             <button
               key={cat}
               type="button"
-              onClick={() => toggleCategory(isSelected ? "" : cat)}
+              onClick={() => toggleCategory(cat)}
 
               className={cn(
                 "inline-flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-sm font-medium transition-all",

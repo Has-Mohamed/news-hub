@@ -4,12 +4,12 @@ import { persist } from "zustand/middleware"
 
 interface PreferencesState {
   // Source
-  preferredSource: NewsSource | ""
-  toggleSource: (source: NewsSource | "") => void
+  preferredSource: NewsSource[]
+  toggleSource: (source: NewsSource) => void
 
   //Category
-  preferredCategory: Category | ""
-  toggleCategory: (category: Category | "") => void
+  preferredCategory: Category[]
+  toggleCategory: (category: Category) => void
 
   //Author
   preferredAuthors: string[]
@@ -24,17 +24,21 @@ const usePreferences = create<PreferencesState>()(
   persist(
     (set) => ({
       // Source
-      preferredSource: "",
-      toggleSource: (preferredSource) =>
-        set(() => ({
-          preferredSource,
+      preferredSource: [],
+      toggleSource: (source) =>
+        set((state) => ({
+          preferredSource: state.preferredSource.includes(source)
+            ? state.preferredSource.filter((s) => s !== source)
+            : [...state.preferredSource, source],
         })),
 
       //Category
-      preferredCategory: "",
+      preferredCategory: [],
       toggleCategory: (preferredCategory) =>
-        set(() => ({
-          preferredCategory,
+        set((state) => ({
+          preferredCategory: state.preferredCategory.includes(preferredCategory)
+            ? state.preferredCategory.filter((c) => c !== preferredCategory)
+            : [...state.preferredCategory, preferredCategory],
         })),
 
       //Author
@@ -51,8 +55,8 @@ const usePreferences = create<PreferencesState>()(
       //reset
       resetPreferences: () =>
         set(() => ({
-          preferredSource: "",
-          preferredCategory: "",
+          preferredSource: [],
+          preferredCategory: [],
           preferredAuthors: [],
         })),
     }),

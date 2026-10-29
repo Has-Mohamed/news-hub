@@ -22,12 +22,12 @@ const PreferredSource = () => {
 
       <div className="grid grid-cols-1 gap-3">
         {allSources.map((source) => {
-          const isSelected = preferredSource === source
+          const isSelected = preferredSource.includes(source)
           return (
             <button
               key={source}
               type="button"
-              onClick={() => toggleSource(isSelected ? "" : source)}
+              onClick={() => toggleSource(source)}
               className={cn(
                 "flex items-center justify-between rounded-xl border p-4 text-left transition-all",
                 "border-gray-200 text-gray-700 hover:border-gray-300 dark:border-gray-600 dark:text-gray-300 dark:hover:border-gray-500",

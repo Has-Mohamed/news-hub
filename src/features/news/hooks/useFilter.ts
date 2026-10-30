@@ -141,6 +141,34 @@ export function useFilter() {
     [debouncedSetSearch, setFilters, setInputSearch]
   )
 
+  // Replace all filters at once (e.g. re-applying preferences).
+  const setAllFiltersPublic = useCallback(
+    (payload: {
+      source?: string | NewsSource[]
+      category?: string | string[]
+      search?: string
+      from?: string
+      to?: string
+    }) => {
+      const next: Filters = { ...DEFAULT_FILTERS }
+      if (payload.search !== undefined) next.search = payload.search
+      if (payload.from !== undefined) next.from = payload.from
+      if (payload.to !== undefined) next.to = payload.to
+      if (payload.source !== undefined) {
+        next.source = Array.isArray(payload.source)
+          ? (payload.source as NewsSource[])
+          : (payload.source.split(",").filter(Boolean) as NewsSource[])
+      }
+      if (payload.category !== undefined) {
+        next.category = Array.isArray(payload.category)
+          ? payload.category
+          : payload.category.split(",").filter(Boolean)
+      }
+      setAllFilters(next)
+    },
+    [setAllFilters]
+  )
+
   /** Clear non-search filters. Preserves the current search term. */
   const clearFilters = useCallback(() => {
     storeClearFilters()
@@ -160,6 +188,7 @@ export function useFilter() {
     inputSearch,
     hasFilters,
     setFilterValue,
+    setAllFilters: setAllFiltersPublic,
     clearFilters,
   }
 }

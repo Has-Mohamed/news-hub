@@ -17,7 +17,7 @@ import PreferencesHeader from "./PreferencesHeader"
 
 export const PreferencesDrawer = () => {
   return (
-    <Drawer modal={false} disablePointerDismissal swipeDirection="right">
+    <Drawer swipeDirection="right">
       <DrawerTrigger
         render={
           <div className="flex size-10 items-center justify-center rounded-md bg-blue-100 text-blue-600 dark:bg-blue-900/40 dark:text-blue-400">

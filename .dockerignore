@@ -1,0 +1,32 @@
+# Dependencies (reinstalled inside the container)
+node_modules
+
+# Build output
+dist
+dist-ssr
+
+# Local environment files (pass secrets via --build-arg or docker-compose env_file)
+.env
+.env.*
+!.env.example
+
+# Version control
+.git
+.gitignore
+
+# Editor / OS artefacts
+.DS_Store
+.vscode
+.idea
+*.suo
+*.sw?
+
+# Docker files (not needed inside the image)
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+# Logs
+*.log
+logs
+

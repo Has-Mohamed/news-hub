@@ -1,17 +1,19 @@
 import { fetchAllArticles } from "@/services/api/newsProviders/newsService"
 import { useInfiniteQuery } from "@tanstack/react-query"
-import { useResolvedFilters } from "./useResolvedFilters"
 import usePreferences from "@/features/preferences/store/usePreferences"
 import { sortArticlesByPreferredAuthors } from "../lib/utils"
+import { useFilterStore } from "../store/useFilterStore"
 
 const useNews = () => {
-  const { filters } = useResolvedFilters()
+  const filters = useFilterStore((state) => state.filters)
+  const isReady = useFilterStore((state) => state.isReady)
   const preferredAuthors = usePreferences((state) => state.preferredAuthors)
-  console.log("useNews", filters)
 
   return useInfiniteQuery({
     queryKey: ["news", filters],
-
+    // Don't fetch until bootstrap is done (prevents a stale empty-filter request
+    // before URL params or preferences have been loaded into state).
+    enabled: isReady,
     queryFn: ({ pageParam }) => fetchAllArticles({ page: pageParam, filters }),
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {

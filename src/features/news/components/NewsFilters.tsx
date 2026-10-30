@@ -14,7 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Calendar1Icon, FilterIcon } from "lucide-react"
-import useFiltersParams from "../hooks/useFiltersParams"
+import useFilter from "../hooks/useFilter"
 import { CATEGORIES, SOURCE_LABELS } from "../types/Articles"
 
 const formatDate = (date: string) => {
@@ -25,8 +25,7 @@ const formatDate = (date: string) => {
 }
 
 const NewsFilters = () => {
-  const { filters, setFilterValue, hasFilters, clearFilters } =
-    useFiltersParams()
+  const { filters, setFilterValue, hasFilters, clearFilters } = useFilter()
 
   return (
     <div className="flex w-full flex-col gap-4">

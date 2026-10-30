@@ -1,6 +1,7 @@
 import type { Article } from "@/features/news/types/Articles"
 import type { ArticleApiParams, NewsApiResponseMap } from "@/services/types"
 import { adaptGuardianArticle } from "./newsAdapter/guardianAdapter"
+import { httpClient } from "../httpClient"
 
 const BASE_URL = "https://content.guardianapis.com"
 const API_KEY = import.meta.env.VITE_GUARDIAN_KEY
@@ -54,10 +55,10 @@ export const fetchGuardianArticles = async ({
     const url = `${BASE_URL}/search?${queryParams.toString()}`
 
     // Fetch data from the Guardian API
-    const response = await fetch(url)
-
-    // Parse the JSON response
-    const data: NewsApiResponseMap["guardian"] = await response.json()
+    const data = await httpClient<NewsApiResponseMap["guardian"]>({
+      url,
+      errorMsg: "Guardian Request failed",
+    })
 
     // Return the articles data
     return {

@@ -1,6 +1,7 @@
 import type { Article } from "@/features/news/types/Articles"
 import type { ArticleApiParams, NewsApiResponseMap } from "@/services/types"
 import { adaptNYTArticle } from "./newsAdapter/nyTimesAdapter"
+import { httpClient } from "../httpClient"
 
 const BASE_URL = "https://api.nytimes.com/svc/search/v2"
 const API_KEY = import.meta.env.VITE_NYT_KEY
@@ -52,11 +53,10 @@ export const fetchNYTimesArticles = async ({
     // Construct the full URL
     const url = `${BASE_URL}/articlesearch.json?${queryParams.toString()}`
 
-    // Fetch data from the Guardian API
-    const response = await fetch(url)
-
-    // Parse the JSON response
-    const data: NewsApiResponseMap["nytimes"] = await response.json()
+    const data = await httpClient<NewsApiResponseMap["nytimes"]>({
+      url,
+      errorMsg: "New York  Times Request failed",
+    })
 
     // Return the articles data
     return {

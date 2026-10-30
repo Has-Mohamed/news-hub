@@ -1,6 +1,7 @@
 import type { Article } from "@/features/news/types/Articles"
 import type { ArticleApiParams, NewsApiResponseMap } from "@/services/types"
 import { adaptNewsApiArticle } from "./newsAdapter/newsApiAdapter"
+import { httpClient } from "../httpClient"
 
 const BASE_URL = "https://newsapi.org/v2"
 const API_KEY = import.meta.env.VITE_NEWSAPI_KEY
@@ -50,16 +51,15 @@ export const fetchNewsApiArticles = async ({
     // Construct the full URL
     const url = `${BASE_URL}/${endpoint}?${queryParams.toString()}`
 
-    // Fetch data from the Guardian API
-    const response = await fetch(url)
-
-    // Parse the JSON response
-    const data: NewsApiResponseMap["newsapi"] = await response.json()
+    const data = await httpClient<NewsApiResponseMap["newsapi"]>({
+      url,
+      errorMsg: "News apis Request failed",
+    })
 
     // Return the articles data
     return {
-      articles: data.articles.map(adaptNewsApiArticle),
-      totalResults: data.totalResults,
+      articles: data?.articles?.map(adaptNewsApiArticle),
+      totalResults: data?.totalResults,
     }
   } catch (error) {
     console.error(error)

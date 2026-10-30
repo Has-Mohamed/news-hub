@@ -3,10 +3,11 @@ import type {
   ArticlesFilters,
   NewsSource,
 } from "@/features/news/types/Articles"
+import { customToast } from "@/lib/utils"
+import type { ArticleApiParams } from "@/services/types"
 import { fetchGuardianArticles } from "./guardian"
 import { fetchNewsApiArticles } from "./newsApi"
 import { fetchNYTimesArticles } from "./nyTimes"
-import type { ArticleApiParams } from "@/services/types"
 
 const newsProviders: Record<
   NewsSource,
@@ -52,6 +53,17 @@ export const fetchAllArticles = async ({
       totalResults += result.value.totalResults
     } else {
       console.error(`Failed to fetch from source: ${source}`, result.reason)
+      let description = "Failed to fetch articles from source"
+      if (result.reason instanceof Error) {
+        description = result.reason.message
+      }
+
+      customToast({
+        type: "error",
+        toastParams: {
+          description: description,
+        },
+      })
     }
   }
   return { articles, totalResults }

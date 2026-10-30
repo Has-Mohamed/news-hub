@@ -1,6 +1,6 @@
+import { customToast } from "@/lib/utils"
 import { Plus, Sparkles, User, X } from "lucide-react"
 import usePreferences from "../store/usePreferences"
-import { toast } from "@/components/ui/toast"
 
 const PreferredAuthors = () => {
   const { preferredAuthors, addAuthor, removeAuthor } = usePreferences()
@@ -11,22 +11,20 @@ const PreferredAuthors = () => {
     const newAuthor = form.author.value
 
     if (!newAuthor.trim()) {
-      toast.add({
+      customToast({
         type: "error",
-        description: "Please enter an author name",
-        data: {
-          className: "!fixed !left-4 !bottom-4 !w-max !bg-red-100",
+        toastParams: {
+          description: "Please enter an author name",
         },
       })
       return
     }
 
     if (preferredAuthors.includes(newAuthor.trim())) {
-      toast.add({
+      customToast({
         type: "error",
-        description: "Author already added",
-        data: {
-          className: "!fixed !left-4 !bottom-4 !w-max !bg-red-100",
+        toastParams: {
+          description: "Author already added",
         },
       })
       return
